@@ -5,13 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Builder
 public class User {
-    private final Long id;
-    private String name;
-    private String email;
-    private Integer balance;
+    private Long id;
+    private String fullName;
+    private BigDecimal amountOfMoney;
 }
