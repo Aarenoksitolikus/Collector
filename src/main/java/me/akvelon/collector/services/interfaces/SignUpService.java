@@ -1,9 +1,8 @@
 package me.akvelon.collector.services.interfaces;
 
 import me.akvelon.collector.dto.UserForm;
-import org.springframework.stereotype.Service;
+import me.akvelon.collector.models.User;
 
-@Service
 public interface SignUpService {
-    UserForm signUp(UserForm userForm);
+    User signUp(UserForm userForm);
 }
