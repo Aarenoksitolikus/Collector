@@ -3,10 +3,12 @@ package me.akvelon.collector.repositories.collections;
 import me.akvelon.collector.models.User;
 import me.akvelon.collector.repositories.intefraces.UsersRepository;
 import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 @Profile("dev-collections")
 public class UsersRepositoryCollectionsImpl implements UsersRepository {
 
@@ -18,37 +20,37 @@ public class UsersRepositoryCollectionsImpl implements UsersRepository {
     }
 
     @Override
-    public Optional<User> findById(java.lang.Long aLong) {
+    public Optional<User> findById(Long aLong) {
         return Optional.empty();
     }
 
     @Override
-    public void save(me.akvelon.collector.models.User entity) {
+    public User save(User entity) {
+        return null;
+    }
+
+    @Override
+    public void update(User entity) {
 
     }
 
     @Override
-    public void update(me.akvelon.collector.models.User entity) {
+    public void deleteById(Long id) {
 
     }
 
     @Override
-    public void deleteById(java.lang.Long id) {
+    public void delete(User entity) {
 
     }
 
     @Override
-    public void delete(me.akvelon.collector.models.User entity) {
+    public void deleteAll(List<User> entities) {
 
     }
 
     @Override
-    public void deleteAll(List<me.akvelon.collector.models.User> entities) {
-
-    }
-
-    @Override
-    public Optional<me.akvelon.collector.models.User> findFirstByName(String name) {
+    public Optional<User> findFirstByName(String name) {
         return Optional.empty();
     }
 }

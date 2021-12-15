@@ -4,10 +4,7 @@ import me.akvelon.collector.dto.UserDto;
 import me.akvelon.collector.services.interfaces.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,5 +22,11 @@ public class UsersController {
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(usersService.getById(id));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUserById(@PathVariable Long id) {
+        usersService.deleteUserById(id);
+        return ResponseEntity.ok("User with ID " + id + " was successfully deleted");
     }
 }
