@@ -4,8 +4,6 @@ import me.akvelon.collector.models.User;
 import me.akvelon.collector.repositories.intefraces.UsersRepository;
 import org.springframework.context.annotation.Profile;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,11 +49,6 @@ public class UsersRepositoryCollectionsImpl implements UsersRepository {
 
     @Override
     public Optional<me.akvelon.collector.models.User> findFirstByName(String name) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<me.akvelon.collector.models.User> findByEmail(String email) {
         return Optional.empty();
     }
 }
