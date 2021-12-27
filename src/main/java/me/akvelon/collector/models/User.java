@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import me.akvelon.collector.exceptions.BalanceCheckException;
 
 import java.math.BigDecimal;
 
@@ -18,10 +19,12 @@ public class User {
     private BigDecimal amountOfMoney;
 
     public void changeAmountOfMoney(BigDecimal amountOfMoney) {
-        if (amountOfMoney.compareTo(new BigDecimal("0")) > 0) {
-            this.amountOfMoney.add(amountOfMoney);
-        } else {
-            this.amountOfMoney.subtract(amountOfMoney);
-        }
+        if (this.amountOfMoney.compareTo(amountOfMoney) > 0) {
+            if (amountOfMoney.compareTo(new BigDecimal("0")) > 0) {
+                this.amountOfMoney.add(amountOfMoney);
+            } else {
+                this.amountOfMoney.subtract(amountOfMoney);
+            }
+        } else throw new BalanceCheckException("User's amount of money is not enough to complete transaction");
     }
 }
