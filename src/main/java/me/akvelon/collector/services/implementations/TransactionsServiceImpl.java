@@ -2,6 +2,7 @@ package me.akvelon.collector.services.implementations;
 
 import me.akvelon.collector.exceptions.BalanceCheckException;
 import me.akvelon.collector.exceptions.UserNotFoundException;
+import me.akvelon.collector.models.Page;
 import me.akvelon.collector.models.Transaction;
 import me.akvelon.collector.repositories.intefraces.TransactionsRepository;
 import me.akvelon.collector.repositories.intefraces.UsersRepository;
@@ -26,6 +27,11 @@ public class TransactionsServiceImpl implements TransactionsService {
     @Override
     public List<Transaction> getAll() {
         return transactionsRepository.findAll();
+    }
+
+    @Override
+    public Page<Transaction> getPage(int limit, int offset) {
+        return null;
     }
 
     @Override

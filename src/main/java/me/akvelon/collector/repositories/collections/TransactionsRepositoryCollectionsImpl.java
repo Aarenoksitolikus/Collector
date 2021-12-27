@@ -18,6 +18,11 @@ public class TransactionsRepositoryCollectionsImpl implements TransactionsReposi
     }
 
     @Override
+    public List<Transaction> findAll(int limit, int offset) {
+        return null;
+    }
+
+    @Override
     public Optional<Transaction> findById(Long aLong) {
         return Optional.empty();
     }
