@@ -1,5 +1,6 @@
 package me.akvelon.collector.repositories.collections;
 
+import me.akvelon.collector.exceptions.UserNotFoundException;
 import me.akvelon.collector.models.User;
 import me.akvelon.collector.repositories.intefraces.UsersRepository;
 import org.springframework.context.annotation.Profile;
@@ -76,6 +77,8 @@ public class UsersRepositoryCollectionsImpl implements UsersRepository {
                 user.changeAmountOfMoney(amount);
                 return user;
             });
+        } else {
+            throw new UserNotFoundException("User with ID " + id + " not found");
         }
     }
 }
