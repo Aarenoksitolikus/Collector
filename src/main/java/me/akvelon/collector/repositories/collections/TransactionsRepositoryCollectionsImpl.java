@@ -98,7 +98,7 @@ public class TransactionsRepositoryCollectionsImpl implements TransactionsReposi
     }
 
     @Override
-    public List<Transaction> findAllInLast30Sec(LocalDateTime time) {
+    public List<Transaction> findAllLatest(LocalDateTime time) {
         return null;
     }
 }

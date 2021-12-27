@@ -7,5 +7,5 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TransactionsRepository extends CrudRepository<Transaction, Long> {
-    List<Transaction> findAllInLast30Sec(LocalDateTime time);
+    List<Transaction> findAllLatest(LocalDateTime time);
 }

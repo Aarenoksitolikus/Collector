@@ -1,7 +1,5 @@
 package me.akvelon.collector.services.implementations;
 
-import me.akvelon.collector.exceptions.BalanceCheckException;
-import me.akvelon.collector.exceptions.UserNotFoundException;
 import me.akvelon.collector.models.Page;
 import me.akvelon.collector.models.Transaction;
 import me.akvelon.collector.repositories.intefraces.TransactionsRepository;
@@ -36,7 +34,7 @@ public class TransactionsServiceImpl implements TransactionsService {
 
     @Override
     public List<Transaction> getAllTheLatest(LocalDateTime time) {
-        return transactionsRepository.findAllInLast30Sec(time);
+        return transactionsRepository.findAllLatest(time);
     }
 
     @Override
