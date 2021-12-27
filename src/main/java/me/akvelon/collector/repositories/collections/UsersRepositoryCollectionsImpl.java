@@ -5,57 +5,77 @@ import me.akvelon.collector.repositories.intefraces.UsersRepository;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
-import java.io.File;
 import java.math.BigDecimal;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 @Repository
 @Profile("dev-collections")
 public class UsersRepositoryCollectionsImpl implements UsersRepository {
 
-    private File dataStore;
+    private final AtomicLong currentUserId;
+    private final Map<Long, User> users;
 
-    @Override
-    public List<User> findAll() {
-        LinkedList<User> result = new LinkedList<>();
-        result.add(User.builder()
-                .id(1L)
-                .fullName("Maxim Ivanov")
-                .amountOfMoney(new BigDecimal("0.0"))
-                .email("maxim.ivanov@akvelon.com")
-                .build());
-        return result;
+    public UsersRepositoryCollectionsImpl() {
+        this.currentUserId = new AtomicLong(0L);
+        this.users = new ConcurrentSkipListMap<>();
     }
 
     @Override
-    public Optional<User> findById(Long aLong) {
-        return Optional.empty();
+    public List<User> findAll() {
+        return new ArrayList<>(users.values());
+    }
+
+    @Override
+    public List<User> findAll(int limit, int offset) {
+        return users.values().stream().skip(offset).limit(limit).collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return Optional.ofNullable(users.get(id));
     }
 
     @Override
     public User save(User entity) {
-        return null;
+        var newUserId = currentUserId.incrementAndGet();
+        entity.setId(newUserId);
+        users.put(newUserId, entity);
+        return entity;
     }
 
     @Override
     public void update(User entity) {
-
+        users.computeIfPresent(entity.getId(), (id, user) -> {
+            user.setAmountOfMoney(entity.getAmountOfMoney());
+            user.setEmail(entity.getEmail());
+            user.setFullName(entity.getFullName());
+            return user;
+        });
     }
 
     @Override
     public void delete(User entity) {
-
+        users.remove(entity.getId());
     }
 
     @Override
     public void deleteById(Long id) {
-
+        users.remove(id);
     }
 
     @Override
-    public Optional<User> findFirstByName(String name) {
-        return Optional.empty();
+    public void changeAmountOfMoney(Long id, BigDecimal amount) {
+        if (id != null) {
+            users.computeIfPresent(id, (userId, user) -> {
+                user.changeAmountOfMoney(amount);
+                return user;
+            });
+        }
     }
 }

@@ -1,11 +1,13 @@
 package me.akvelon.collector.services.implementations;
 
+import me.akvelon.collector.models.Page;
 import me.akvelon.collector.models.User;
 import me.akvelon.collector.repositories.intefraces.UsersRepository;
 import me.akvelon.collector.services.interfaces.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,17 +23,18 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    public Page<User> getPage(int limit, int offset) {
+        return new Page<>((User[]) usersRepository.findAll(limit, offset).toArray());
+    }
+
+    @Override
     public Optional<User> getById(Long id){
         return usersRepository.findById(id);
     }
 
     @Override
-    public void changeAmountOfMoney(Long userId, String amount) {
-        var user = usersRepository.findById(userId).orElse(null);
-        if (user != null) {
-            user.changeAmountOfMoney(amount);
-        }
-        usersRepository.update(user);
+    public void changeBalance(Long userId, String amount) {
+        usersRepository.changeAmountOfMoney(userId, new BigDecimal(amount));
     }
 
     @Override

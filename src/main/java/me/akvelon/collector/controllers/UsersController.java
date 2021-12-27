@@ -1,6 +1,5 @@
 package me.akvelon.collector.controllers;
 
-import me.akvelon.collector.dto.UserDto;
 import me.akvelon.collector.exceptions.UserNotFoundException;
 import me.akvelon.collector.models.User;
 import me.akvelon.collector.services.interfaces.UsersService;
@@ -35,7 +34,7 @@ public class UsersController {
 
     @PatchMapping("/{id}/{amount}")
     public ResponseEntity<String> updateUserAmountOfMoney(@PathVariable Long id, @PathVariable String amount) {
-        usersService.changeAmountOfMoney(id, amount);
+        usersService.changeBalance(id, amount);
         return ResponseEntity.ok("The amount of money of the user with ID " + id + " was changed to " + amount);
     }
 }
