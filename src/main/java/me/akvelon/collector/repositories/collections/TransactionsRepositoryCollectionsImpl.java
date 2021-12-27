@@ -1,6 +1,7 @@
 package me.akvelon.collector.repositories.collections;
 
-import me.akvelon.collector.exceptions.BalanceCheckException;
+import me.akvelon.collector.exceptions.TransactionException;
+import me.akvelon.collector.exceptions.UserNotFoundException;
 import me.akvelon.collector.models.Transaction;
 import me.akvelon.collector.repositories.intefraces.TransactionsRepository;
 import me.akvelon.collector.repositories.intefraces.UsersRepository;
@@ -16,6 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Repository
@@ -27,10 +29,12 @@ public class TransactionsRepositoryCollectionsImpl implements TransactionsReposi
 
     private final AtomicLong currentTransactionId;
     private final Map<Long, Transaction> transactions;
+    private final AtomicReference<BigDecimal> lostMoney;
 
     public TransactionsRepositoryCollectionsImpl() {
         this.currentTransactionId = new AtomicLong(0L);
         this.transactions = new ConcurrentSkipListMap<>();
+        this.lostMoney = new AtomicReference<>(new BigDecimal(0L));
     }
 
     @Override
@@ -51,13 +55,30 @@ public class TransactionsRepositoryCollectionsImpl implements TransactionsReposi
     @Override
     public Transaction save(Transaction entity) {
         if (entity.getAmount().compareTo(new BigDecimal("0")) > 0) {
-            usersRepository.changeAmountOfMoney(entity.getFrom(), entity.getAmount().negate());
-            usersRepository.changeAmountOfMoney(entity.getTo(), entity.getAmount());
+            var from = entity.getFrom();
+            var to = entity.getTo();
+            var amount = entity.getAmount();
+
+            usersRepository.changeAmountOfMoney(from, amount.negate());
+            try {
+                usersRepository.changeAmountOfMoney(to, amount);
+            } catch (UserNotFoundException recipientNotFound) {
+                try {
+                    usersRepository.changeAmountOfMoney(from, amount);
+                    throw new TransactionException("Target account not found. Transaction reverted");
+                } catch (UserNotFoundException senderNotFound) {
+                    this.lostMoney.set(lostMoney.get().add(amount));
+                    throw new TransactionException("Target account not found. Source account not found. "
+                            + "Please, contact support team");
+                }
+            }
+
             var newTransactionId = currentTransactionId.incrementAndGet();
             entity.setId(newTransactionId);
             transactions.put(newTransactionId, entity);
+            return entity;
         } else {
-            throw new BalanceCheckException("The amount of money sent must be greater than 0");
+            throw new TransactionException("The amount of money sent must be greater than 0");
         }
     }
 
