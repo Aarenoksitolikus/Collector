@@ -5,6 +5,7 @@ import java.util.Optional;
 
 public interface CrudRepository<T, ID> {
     List<T> findAll();
+    List<T> findAll(int limit, int offset);
     Optional<T> findById(ID id);
 
     T save(T entity);
