@@ -5,6 +5,7 @@ import me.akvelon.collector.repositories.intefraces.TransactionsRepository;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,22 +33,17 @@ public class TransactionsRepositoryCollectionsImpl implements TransactionsReposi
     }
 
     @Override
-    public void deleteById(Long id) {
-
-    }
-
-    @Override
     public void delete(Transaction entity) {
 
     }
 
     @Override
-    public void deleteAll(List<Transaction> entities) {
+    public void deleteById(Long id) {
 
     }
 
     @Override
-    public List<Transaction> findAllInLast30Sec() {
+    public List<Transaction> findAllInLast30Sec(LocalDateTime time) {
         return null;
     }
 }

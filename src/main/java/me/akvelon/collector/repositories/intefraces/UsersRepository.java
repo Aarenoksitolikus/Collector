@@ -2,7 +2,6 @@ package me.akvelon.collector.repositories.intefraces;
 
 import me.akvelon.collector.models.User;
 import me.akvelon.collector.repositories.CrudRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 

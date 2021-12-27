@@ -5,6 +5,9 @@ import me.akvelon.collector.repositories.intefraces.UsersRepository;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
+import java.io.File;
+import java.math.BigDecimal;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,11 +15,18 @@ import java.util.Optional;
 @Profile("dev-collections")
 public class UsersRepositoryCollectionsImpl implements UsersRepository {
 
-    private List<User> users;
+    private File dataStore;
 
     @Override
     public List<User> findAll() {
-        return users;
+        LinkedList<User> result = new LinkedList<>();
+        result.add(User.builder()
+                .id(1L)
+                .fullName("Maxim Ivanov")
+                .amountOfMoney(new BigDecimal("0.0"))
+                .email("maxim.ivanov@akvelon.com")
+                .build());
+        return result;
     }
 
     @Override
@@ -35,17 +45,12 @@ public class UsersRepositoryCollectionsImpl implements UsersRepository {
     }
 
     @Override
-    public void deleteById(Long id) {
-
-    }
-
-    @Override
     public void delete(User entity) {
 
     }
 
     @Override
-    public void deleteAll(List<User> entities) {
+    public void deleteById(Long id) {
 
     }
 

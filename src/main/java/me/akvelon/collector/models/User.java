@@ -16,4 +16,12 @@ public class User {
     private String fullName;
     private String email;
     private BigDecimal amountOfMoney;
+
+    public void changeAmountOfMoney(BigDecimal amountOfMoney) {
+        if (amountOfMoney.compareTo(new BigDecimal("0")) > 0) {
+            this.amountOfMoney.add(amountOfMoney);
+        } else {
+            this.amountOfMoney.subtract(amountOfMoney);
+        }
+    }
 }

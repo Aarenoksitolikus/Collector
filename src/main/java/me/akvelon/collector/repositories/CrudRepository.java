@@ -9,7 +9,6 @@ public interface CrudRepository<T, ID> {
 
     T save(T entity);
     void update(T entity);
-    void deleteById(Long id);
     void delete(T entity);
-    void deleteAll(List<T> entities);
+    void deleteById(ID id);
 }
