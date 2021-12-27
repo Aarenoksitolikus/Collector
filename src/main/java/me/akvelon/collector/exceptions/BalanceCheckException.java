@@ -1,7 +1,7 @@
 package me.akvelon.collector.exceptions;
 
 public class BalanceCheckException extends RuntimeException {
-    private String message;
+    private final String message;
 
     public BalanceCheckException(String message) {
         this.message = message;
@@ -10,9 +10,5 @@ public class BalanceCheckException extends RuntimeException {
     @Override
     public String getMessage() {
         return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 }
