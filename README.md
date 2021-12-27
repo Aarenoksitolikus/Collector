@@ -6,4 +6,7 @@ Application can store and show information about bank's clients and theirs trans
 
 This is MVC project without any DB connections (all data collected at common Java collections) in first version
 
-For all questions and comments please contact to me by Skype (Maxim Ivanov), my own email (super.maxa2001@yamdex.ru) or Telegram (@Aarenoksitolikus)
+For all questions and comments please contact to me by:
+1) Skype (Maxim Ivanov, https://join.skype.com/invite/geJFGoQbXaXA)
+2) my own email (super.maxa2001@yandex.ru)
+3) Telegram (@Aarenoksitolikus, https://t.me/Aarenoksitolikus)
