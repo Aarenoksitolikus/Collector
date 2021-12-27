@@ -1,6 +1,7 @@
 package me.akvelon.collector.controllers;
 
 import me.akvelon.collector.exceptions.TransactionNotFoundException;
+import me.akvelon.collector.models.Page;
 import me.akvelon.collector.models.Transaction;
 import me.akvelon.collector.services.interfaces.TransactionsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +17,19 @@ public class TransactionsController {
     @Autowired
     private TransactionsService transactionsService;
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Transaction>> getAllTransactions() {
         return ResponseEntity.ok(transactionsService.getAll());
     }
 
+    @GetMapping
+    public ResponseEntity<Page<Transaction>> getPageOftransactions(@RequestBody int limit, @RequestBody int offset) {
+        return ResponseEntity.ok(transactionsService.getPage(limit, offset));
+    }
+
     @GetMapping("/last")
-    public ResponseEntity<List<Transaction>> getLastTransactions() {
-        return ResponseEntity.ok(transactionsService.getAllInLast30Sec(LocalDateTime.now()));
+    public ResponseEntity<List<Transaction>> getLastTransactions(@RequestBody LocalDateTime time) {
+        return ResponseEntity.ok(transactionsService.getAllTheLatest(time));
     }
 
     @GetMapping("/{id}")

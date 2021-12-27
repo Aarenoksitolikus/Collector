@@ -35,7 +35,7 @@ public class TransactionsServiceImpl implements TransactionsService {
     }
 
     @Override
-    public List<Transaction> getAllInLast30Sec(LocalDateTime time) {
+    public List<Transaction> getAllTheLatest(LocalDateTime time) {
         return transactionsRepository.findAllInLast30Sec(time);
     }
 
