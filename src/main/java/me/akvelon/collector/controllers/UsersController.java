@@ -1,6 +1,7 @@
 package me.akvelon.collector.controllers;
 
 import me.akvelon.collector.exceptions.UserNotFoundException;
+import me.akvelon.collector.models.Page;
 import me.akvelon.collector.models.User;
 import me.akvelon.collector.services.interfaces.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,14 @@ public class UsersController {
     @Autowired
     private UsersService usersService;
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(usersService.getAll());
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<User>> getPageOfUsers(@RequestBody int limit, @RequestBody int offset) {
+        return ResponseEntity.ok(usersService.getPage(limit, offset));
     }
 
     @GetMapping("/{id}")
@@ -30,11 +36,5 @@ public class UsersController {
     public ResponseEntity<String> deleteUserById(@PathVariable Long id) {
         usersService.deleteUserById(id);
         return ResponseEntity.ok("User with ID " + id + " was successfully deleted");
-    }
-
-    @PatchMapping("/{id}/{amount}")
-    public ResponseEntity<String> updateUserAmountOfMoney(@PathVariable Long id, @PathVariable String amount) {
-        usersService.changeBalance(id, amount);
-        return ResponseEntity.ok("The amount of money of the user with ID " + id + " was changed to " + amount);
     }
 }
