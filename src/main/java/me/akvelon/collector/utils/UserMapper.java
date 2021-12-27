@@ -11,6 +11,7 @@ public class UserMapper {
     public static User formToUser(UserForm form) {
         return User.builder()
                 .fullName(form.getFullName())
+                .email(form.getEmail())
                 .amountOfMoney(new BigDecimal("0"))
                 .build();
     }
