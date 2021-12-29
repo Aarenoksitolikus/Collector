@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -27,9 +26,9 @@ public class TransactionsController {
         return ResponseEntity.ok(transactionsService.getPage(limit, offset));
     }
 
-    @GetMapping("/last")
-    public ResponseEntity<List<Transaction>> getLastTransactions(@RequestParam LocalDateTime time) {
-        return ResponseEntity.ok(transactionsService.getAllTheLatest(time));
+    @GetMapping("/last/{seconds}")
+    public ResponseEntity<List<Transaction>> getLastTransactions(@PathVariable Long seconds) {
+        return ResponseEntity.ok(transactionsService.getAllTheLatest(seconds));
     }
 
     @GetMapping("/{id}")

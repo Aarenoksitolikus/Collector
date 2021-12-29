@@ -98,7 +98,7 @@ public class TransactionsRepositoryCollectionsImpl implements TransactionsReposi
     }
 
     @Override
-    public List<Transaction> findAllLatest(LocalDateTime time) {
-        return null;
+    public List<Transaction> findAllLatest(LocalDateTime givenTime) {
+        return transactions.values().stream().filter(transaction -> transaction.getTimestamp().isAfter(givenTime)).collect(Collectors.toList());
     }
 }

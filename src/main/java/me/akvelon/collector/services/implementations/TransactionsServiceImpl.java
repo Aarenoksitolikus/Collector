@@ -19,9 +19,6 @@ public class TransactionsServiceImpl implements TransactionsService {
     @Autowired
     private TransactionsRepository transactionsRepository;
 
-    @Autowired
-    private UsersRepository usersRepository;
-
     @Override
     public List<Transaction> getAll() {
         return transactionsRepository.findAll();
@@ -33,8 +30,8 @@ public class TransactionsServiceImpl implements TransactionsService {
     }
 
     @Override
-    public List<Transaction> getAllTheLatest(LocalDateTime time) {
-        return transactionsRepository.findAllLatest(time);
+    public List<Transaction> getAllTheLatest(Long seconds) {
+        return transactionsRepository.findAllLatest(LocalDateTime.now().minusSeconds(seconds));
     }
 
     @Override
