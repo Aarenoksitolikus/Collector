@@ -23,19 +23,19 @@ public class TransactionsController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Transaction>> getPageOftransactions(@RequestBody int limit, @RequestBody int offset) {
+    public ResponseEntity<Page<Transaction>> getPageOftransactions(@RequestParam int limit, @RequestParam int offset) {
         return ResponseEntity.ok(transactionsService.getPage(limit, offset));
     }
 
     @GetMapping("/last")
-    public ResponseEntity<List<Transaction>> getLastTransactions(@RequestBody LocalDateTime time) {
+    public ResponseEntity<List<Transaction>> getLastTransactions(@RequestParam LocalDateTime time) {
         return ResponseEntity.ok(transactionsService.getAllTheLatest(time));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Transaction> getTransactionById(@PathVariable Long id) {
         return ResponseEntity.ok(transactionsService.getById(id)
-                .orElseThrow(() -> new TransactionNotFoundException("Transaction with ID " + id + " not found")));
+                .orElseThrow(() -> new TransactionNotFoundException("Transaction with ID = " + id + " not found")));
     }
 
     @PostMapping("{from}/{to}/{amount}")

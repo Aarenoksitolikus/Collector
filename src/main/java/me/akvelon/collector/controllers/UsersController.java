@@ -22,19 +22,26 @@ public class UsersController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<User>> getPageOfUsers(@RequestBody int limit, @RequestBody int offset) {
+    public ResponseEntity<Page<User>> getPageOfUsers(@RequestParam int limit, @RequestParam int offset) {
         return ResponseEntity.ok(usersService.getPage(limit, offset));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(usersService.getById(id)
-                .orElseThrow(() -> new UserNotFoundException("User with ID " + id + " not found")));
+                .orElseThrow(() -> new UserNotFoundException("User with ID = " + id + " not found")));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUserById(@PathVariable Long id) {
         usersService.deleteUserById(id);
-        return ResponseEntity.ok("User with ID " + id + " was successfully deleted");
+        return ResponseEntity.ok("User with ID = " + id + " was successfully deleted");
+    }
+
+    @PatchMapping("/{id}/{amount}")
+    public ResponseEntity<String> changeUserBalance(@PathVariable Long id, @PathVariable String amount) {
+        usersService.changeBalance(id, amount);
+        return ResponseEntity.ok("The account of the user with ID = " + id +
+                " was successfully changed to " + amount);
     }
 }
