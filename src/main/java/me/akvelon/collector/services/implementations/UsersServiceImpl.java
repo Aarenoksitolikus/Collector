@@ -24,7 +24,7 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public Page<User> getPage(int limit, int offset) {
-        return new Page<>((User[]) usersRepository.findAll(limit, offset).toArray());
+        return new Page<>(usersRepository.findAll(limit, offset).toArray(new User[0]));
     }
 
     @Override
