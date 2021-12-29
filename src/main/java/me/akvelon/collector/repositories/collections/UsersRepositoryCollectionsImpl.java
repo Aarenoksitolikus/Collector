@@ -73,12 +73,18 @@ public class UsersRepositoryCollectionsImpl implements UsersRepository {
     @Override
     public void changeAmountOfMoney(Long id, BigDecimal amount) {
         if (id != null) {
-            users.computeIfPresent(id, (userId, user) -> {
-                user.changeAmountOfMoney(amount);
-                return user;
-            });
+            if (!isBalanceChangeSuccessful(id, amount)) throw new UserNotFoundException("User with ID = " + id + " not found");
         } else {
-            throw new UserNotFoundException("User with ID = " + id + " not found");
+            throw new UserNotFoundException("User's ID must not be null");
         }
+    }
+
+    private boolean isBalanceChangeSuccessful(Long id, BigDecimal amount) {
+        var resultUser = users.computeIfPresent(id, (userId, user) -> {
+            user.changeAmountOfMoney(amount);
+            return user;
+        });
+
+        return resultUser != null;
     }
 }

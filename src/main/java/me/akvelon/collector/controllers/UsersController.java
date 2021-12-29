@@ -1,10 +1,12 @@
 package me.akvelon.collector.controllers;
 
+import me.akvelon.collector.dto.ExceptionDto;
 import me.akvelon.collector.exceptions.UserNotFoundException;
 import me.akvelon.collector.models.Page;
 import me.akvelon.collector.models.User;
 import me.akvelon.collector.services.interfaces.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
