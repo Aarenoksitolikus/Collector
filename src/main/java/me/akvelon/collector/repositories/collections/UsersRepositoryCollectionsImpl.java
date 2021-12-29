@@ -78,7 +78,7 @@ public class UsersRepositoryCollectionsImpl implements UsersRepository {
                 return user;
             });
         } else {
-            throw new UserNotFoundException("User with ID " + id + " not found");
+            throw new UserNotFoundException("User with ID = " + id + " not found");
         }
     }
 }
