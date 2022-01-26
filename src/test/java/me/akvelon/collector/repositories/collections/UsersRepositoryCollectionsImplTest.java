@@ -62,7 +62,7 @@ class UsersRepositoryCollectionsImplTest {
         class FindAllWithParametersTest {
             @ParameterizedTest(name = "returns correct users list with parameters where limit = {0}, offset = {1}")
             @CsvSource(value = {"1,0,1", "5,0,5", "3,20,23"})
-            void returns_the_part_of_users_on_findAll_with_parameters(int limit, int offset, int capacity) {
+            public void returns_the_part_of_users_on_findAll_with_parameters(int limit, int offset, int capacity) {
                 for (int i = 0; i < capacity; i++) {
                     repository.save(User.builder()
                             .fullName("Maxim")
@@ -99,13 +99,13 @@ class UsersRepositoryCollectionsImplTest {
     @DisplayName("findById() is working")
     class FindByIdTest {
         @Test
-        void returns_null_if_user_does_not_exist
+        public void returns_null_if_user_does_not_exist
                 () {
             assertThat(repository.findById(1L), is(equalTo(Optional.empty())));
         }
 
         @Test
-        void returns_correct_user_if_it_exists() {
+        public void returns_correct_user_if_it_exists() {
             repository.save(user);
             user.setId(1L);
             assertThat(repository.findById(1L).get(), is(equalTo(user)));
@@ -116,14 +116,14 @@ class UsersRepositoryCollectionsImplTest {
     @DisplayName("update() is working")
     class UpdateTest {
         @Test
-        void returns_null_if_user_does_not_exist
+        public void returns_null_if_user_does_not_exist
                 () {
             repository.update(user);
             assertThat(repository.findById(1L), is(equalTo(Optional.empty())));
         }
 
         @Test
-        void updates_all_fields_if_user_exists() {
+        public void updates_all_fields_if_user_exists() {
             repository.save(user);
             user.setEmail("new-email@gmail.com");
             user.setFullName("New User");
@@ -141,7 +141,7 @@ class UsersRepositoryCollectionsImplTest {
         @DisplayName("delete() is working")
         class DeleteTest {
             @Test
-            void returns_empty_optional_if_user_was_deleted() {
+            public void returns_empty_optional_if_user_was_deleted() {
                 repository.save(user);
                 user.setId(1L);
                 assertThat(repository.findById(1L), is(equalTo(Optional.of(user))));
@@ -150,7 +150,7 @@ class UsersRepositoryCollectionsImplTest {
             }
 
             @Test
-            void returns_empty_optional_if_user_was_not_exist() {
+            public void returns_empty_optional_if_user_was_not_exist() {
                 repository.delete(user);
                 assertThat(repository.findById(1L), is(equalTo(Optional.empty())));
             }
@@ -160,7 +160,7 @@ class UsersRepositoryCollectionsImplTest {
         @DisplayName("deleteById() is working")
         class DeleteByIdTest {
             @Test
-            void returns_empty_optional_if_user_exists() {
+            public void returns_empty_optional_if_user_exists() {
                 repository.save(user);
                 user.setId(1L);
                 assertThat(repository.findById(1L), is(equalTo(Optional.of(user))));
@@ -169,7 +169,7 @@ class UsersRepositoryCollectionsImplTest {
             }
 
             @Test
-            void returns_empty_optional_if_user_was_not_exist() {
+            public void returns_empty_optional_if_user_was_not_exist() {
                 repository.deleteById(1L);
                 assertThat(repository.findById(1L), is(equalTo(Optional.empty())));
             }

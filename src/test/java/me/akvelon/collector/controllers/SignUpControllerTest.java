@@ -42,7 +42,7 @@ class SignUpControllerTest {
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @BeforeEach
-    void signUp() {
+    public void setUp() {
         when(signUpService.signUp(TEST_USER_FORM)).thenReturn(User.builder()
                 .id(id++)
                 .fullName(TEST_USER_FORM.getFullName())
