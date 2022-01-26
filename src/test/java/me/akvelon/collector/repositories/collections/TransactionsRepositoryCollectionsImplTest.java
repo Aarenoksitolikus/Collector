@@ -218,7 +218,7 @@ class TransactionsRepositoryCollectionsImplTest {
                         .from(1L)
                         .to(2L)
                         .amount(new BigDecimal("1"))
-                        .timestamp(a.minusSeconds(10))
+                        .timestamp(a.minusDays(10))
                         .build());
             }
             assertThat(transactionsRepository.findAllLatest(a).size(), is(equalTo(0)));
