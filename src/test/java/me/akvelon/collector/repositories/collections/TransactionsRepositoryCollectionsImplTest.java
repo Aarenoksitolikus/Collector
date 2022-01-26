@@ -183,9 +183,45 @@ class TransactionsRepositoryCollectionsImplTest {
     @DisplayName("findAllLatest() is working")
     class FindAllLatestTest {
         @ParameterizedTest(name = "returns all latest transactions from given time")
-        @CsvSource(value = {"1,0"})
-        public void returns_fuck(int a, int b) {
+        @CsvSource(value = {"2022-01-26T18:01:10.154248800,5", "2022-01-26T18:01:10.154248805,25"})
+        public void returns_correct_list_of_latest_transactions(LocalDateTime givenTime, int capacity) {
+            if (capacity > 5) {
+                usersRepository.changeAmountOfMoney(1L, new BigDecimal("200"));
+            }
+            for (int i = 0; i < capacity; i++) {
+                transactionsRepository.save(Transaction.builder()
+                        .from(1L)
+                        .to(2L)
+                        .amount(new BigDecimal("1"))
+                        .timestamp(givenTime.plusNanos(i - 1))
+                        .build());
+            }
+            var expectedTransactions = new ArrayList<Transaction>();
+            for (int i = 3; i <= capacity; i++) {
+                expectedTransactions.add(Transaction.builder()
+                        .id((long) i)
+                        .from(1L)
+                        .to(2L)
+                        .amount(new BigDecimal("1"))
+                        .timestamp(givenTime.plusNanos(i - 2))
+                        .build());
+            }
+            assertThat(transactionsRepository.findAllLatest(givenTime), is(equalTo(expectedTransactions)));
+        }
 
+        @ParameterizedTest
+        @ValueSource(strings = {"2022-01-26T18:01:10.154248800", "2022-01-26T18:03:10.154248800"})
+        public void returns_empty_list_if_there_is_no_operations_after_given_time(String time) {
+            var a = LocalDateTime.parse(time);
+            for (int i = 0; i < 5; i++) {
+                transactionsRepository.save(Transaction.builder()
+                        .from(1L)
+                        .to(2L)
+                        .amount(new BigDecimal("1"))
+                        .timestamp(a.minusSeconds(10))
+                        .build());
+            }
+            assertThat(transactionsRepository.findAllLatest(a).size(), is(equalTo(0)));
         }
     }
 }
