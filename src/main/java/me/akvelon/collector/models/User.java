@@ -24,7 +24,7 @@ public class User {
             if (amountOfMoney.compareTo(new BigDecimal("0")) > 0) {
                 this.amountOfMoney = this.amountOfMoney.add(amountOfMoney);
             } else {
-                if (this.amountOfMoney.compareTo(amountOfMoney.negate()) > 0) {
+                if (this.amountOfMoney.compareTo(amountOfMoney.negate()) >= 0) {
                     this.amountOfMoney = this.amountOfMoney.add(amountOfMoney);
                 } else throw new BalanceCheckException("User's amount of money is not enough to complete transaction");
             }

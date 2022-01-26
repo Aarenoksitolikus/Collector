@@ -70,16 +70,16 @@ class UsersRepositoryCollectionsImplTest {
                             .amountOfMoney(new BigDecimal("0"))
                             .build());
                 }
-                var a = new ArrayList<User>();
+                var expectedUsers = new ArrayList<User>();
                 for (int i = offset + 1; i <= offset + limit; i++) {
-                    a.add(User.builder()
+                    expectedUsers.add(User.builder()
                             .id((long) i)
                             .fullName("Maxim")
                             .email("maxim@gmail.com")
                             .amountOfMoney(new BigDecimal("0"))
                             .build());
                 }
-                assertThat(repository.findAll(limit, offset), is(equalTo(a)));
+                assertThat(repository.findAll(limit, offset), is(equalTo(expectedUsers)));
             }
         }
     }

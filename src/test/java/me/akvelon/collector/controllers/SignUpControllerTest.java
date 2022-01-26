@@ -1,5 +1,7 @@
 package me.akvelon.collector.controllers;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import me.akvelon.collector.dto.UserForm;
 import me.akvelon.collector.models.User;
 import me.akvelon.collector.services.interfaces.SignUpService;
@@ -13,8 +15,12 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -33,8 +39,9 @@ class SignUpControllerTest {
             .build();
 
     private long id = 1L;
+    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    @Test
+    @BeforeEach
     void signUp() {
         when(signUpService.signUp(TEST_USER_FORM)).thenReturn(User.builder()
                 .id(id++)
@@ -42,6 +49,8 @@ class SignUpControllerTest {
                 .email(TEST_USER_FORM.getEmail())
                 .amountOfMoney(new BigDecimal("0"))
                 .build());
+
+        when(signUpService.signUp(null)).thenReturn(null);
     }
 
     @Nested
@@ -49,10 +58,25 @@ class SignUpControllerTest {
     @DisplayName("signUp() is working when")
     class SignUpTest {
         @Test
-        public void return_fuck() {
+        public void return_user_when_comes_not_null_user() throws Exception {
             mockMvc.perform(post("/signup")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(gson.toJson(TEST_USER_FORM)))
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.id", is(1)))
+                    .andExpect(jsonPath("$.fullName", is("Test User")))
+                    .andExpect(jsonPath("$.email", is("test@test.test")))
+                    .andExpect(jsonPath("$.amountOfMoney", is(0)));
+        }
+
+        @Test
+        public void throws_exception_when_comes_null() throws Exception {
+            mockMvc.perform(post("/signup")
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andDo(print())
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.code", is(400)));
         }
     }
 }

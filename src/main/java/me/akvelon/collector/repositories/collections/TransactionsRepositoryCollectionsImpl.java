@@ -37,6 +37,13 @@ public class TransactionsRepositoryCollectionsImpl implements TransactionsReposi
         this.lostMoney = new AtomicReference<>(new BigDecimal(0L));
     }
 
+    public TransactionsRepositoryCollectionsImpl(UsersRepository usersRepository) {
+        this.usersRepository = usersRepository;
+        this.currentTransactionId = new AtomicLong(0L);
+        this.transactions = new ConcurrentSkipListMap<>();
+        this.lostMoney = new AtomicReference<>(new BigDecimal(0L));
+    }
+
     @Override
     public List<Transaction> findAll() {
         return new ArrayList<>(transactions.values());
@@ -99,6 +106,8 @@ public class TransactionsRepositoryCollectionsImpl implements TransactionsReposi
 
     @Override
     public List<Transaction> findAllLatest(LocalDateTime givenTime) {
-        return transactions.values().stream().filter(transaction -> transaction.getTimestamp().isAfter(givenTime)).collect(Collectors.toList());
+        return transactions.values().stream()
+                .filter(transaction -> transaction.getTimestamp().isAfter(givenTime))
+                .collect(Collectors.toList());
     }
 }
